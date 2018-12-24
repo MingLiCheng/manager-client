@@ -27,9 +27,12 @@ export default {
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 section {
-  text-align: center;
+  h1{
+    text-align: center;
+  }
+  /* text-align: center; */
   width: 400px;
   margin: 0 auto;
 }

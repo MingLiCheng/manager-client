@@ -13,6 +13,9 @@
     <el-form-item label="密码" prop="password">
       <el-input type="password" v-model="loginForm.password" autocomplete="off"></el-input>
     </el-form-item>
+    <el-form-item label="记住密码">
+      <el-switch v-model="loginForm.remberpass"></el-switch>
+    </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submitForm('loginForm')">提交</el-button>
       <el-button @click="resetForm('loginForm')">重置</el-button>
@@ -22,6 +25,7 @@
 </template>
 
 <script>
+import jwt_decode from 'jwt-decode'
 export default {
   data() {
     var validateEmail = (rule, value, callback) => {
@@ -49,9 +53,9 @@ export default {
     }
     return {
       loginForm: {
-        email: '',
-        password: ''
-
+        email: '11',
+        password: '',
+        remberpass: true
       },
       rules: {
         email: [
@@ -65,8 +69,17 @@ export default {
       }
     }
   },
+  created() {
+    this.loginForm = { ...JSON.parse(localStorage.getItem('loginInfo')) }
+  },
   methods: {
     submitForm(formName) {
+      // 判断记住密码是否被选中
+      if(this.loginForm.remberpass){ // 选中
+        localStorage.setItem('loginInfo',JSON.stringify(this.loginForm))
+      }else{
+        localStorage.removeItem('loginInfo')
+      }
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$http.post('/api/users/login', this.loginForm).then(result => {
@@ -77,12 +90,10 @@ export default {
               localStorage.setItem('eleToken', token)
               this.$message.success('登陆成功')
               // 解析token
-              // const decode = jwt_decode(token);
-
-              // // 存储数据
-              // this.$store.dispatch("setIsAutnenticated", !this.isEmpty(decode));
-              // this.$store.dispatch("setUser", decode);
-
+              const decode = jwt_decode(token);
+              // 存储数据
+              this.$store.dispatch("setIsAuthenticated", !this.isEmpty(decode))
+              this.$store.dispatch("setUser", decode)
               // 成功 跳转
               this.$router.push('/index')
             }
@@ -93,13 +104,24 @@ export default {
         }
       })
     },
+    isEmpty(value) {
+      return (
+        value === undefined ||
+        value === null ||
+        (typeof value === "object" && Object.keys(value).length === 0) ||
+        (typeof value === "string" && value.trim().length === 0)
+      )
+    },
     resetForm(formName) {
       this.$refs[formName].resetFields()
     },
     test() {
       // alert('1')
     }
-  }
+  },
+  computed: {
+
+  },
 }
 </script>
 

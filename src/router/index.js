@@ -1,28 +1,34 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HomePage from '../components/HomePage'
-import Loginpage from '../components/Loginpage'
+// import HomePage from '../components/HomePage'
+// import Loginpage from '../components/Loginpage'
+// import InfoTab from '../components/InfoTab'
 
 Vue.use(Router)
 
 const router = new Router({
+  mode: 'history',
   routes: [{
       path: '/',
       name: 'Loginpage',
-      component: Loginpage
+      component: () => import('@/components/Loginpage'),
     },
     {
       path: '/index',
       name: 'HomePage',
-      redirect: '/index/infotab',
-      component: HomePage,
-      children: [
-        {
-          path: 'infotab',
-          name: 'infotab',
-          component: () => import('../components/InfoTab')
-        }
-      ]
+      redirect: {
+        name: 'infotab'
+      },
+      component: () => import('@/components/HomePage'),
+      children: [{
+        path: 'infotab',
+        name: 'infotab',
+        component: () => import('@/components/InfoTab'),
+      }]
+    },
+    {
+      path: '*',
+      redirect: '/index'
     }
   ]
 })

@@ -4,7 +4,7 @@
     <el-container class="content-container">
       <el-aside width="202px"><main-aside></main-aside></el-aside>
       <el-main>
-        <router-view><p>{{ $route.fullpath }}</p></router-view>
+        <router-view></router-view>
       </el-main>
     </el-container>
   </el-container>

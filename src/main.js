@@ -2,7 +2,8 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
-import router from './router'
+import store from './stroe/index'
+import router from './router/index'
 // import axios from 'axios'
 import axios from './httpfilter'
 // 引入element-ui
@@ -23,6 +24,7 @@ Vue.messagebox = Vue.prototype.$messagebox = MessageBox
 new Vue({
   el: '#app',
   router,
+  store,
   components: {
     App
   },
