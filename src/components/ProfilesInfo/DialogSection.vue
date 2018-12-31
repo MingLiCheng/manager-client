@@ -1,11 +1,6 @@
 <template>
   <div class="logFund">
-    <el-dialog
-      :title="dialog.title"
-      :visible.sync="dialog.show"
-      width="40%"
-      center:true
-    >
+    <el-dialog :title="dialog.title" :visible.sync="dialog.show" width="40%" center:true>
       <div class="form">
         <el-form
           ref="form"
@@ -47,7 +42,7 @@
 
           <el-form-item class="text_right">
             <el-button @click="dialog.show = false">取 消</el-button>
-            <el-button type="primary" @click="onSubmit('form')" >提 交</el-button>
+            <el-button type="primary" @click="onSubmit('form')">提 交</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -60,7 +55,8 @@ export default {
   name: "dialogsection",
   props: {
     dialog: Object,
-    form: Object
+    form: Object,
+    getProfiles: Function
   },
   data() {
     return {
@@ -88,13 +84,26 @@ export default {
   },
   methods: {
     onSubmit(form) {
-
+      this.$refs[form].validate(valid => {
+        if (valid) {
+          //表单数据验证完成之后，提交数据;
+          const url = this.dialog.option == "add" ? "add" : `edit/${this.form.id}`;
+          this.$http.post(`/api/profiles/${url}`, this.form).then(result => {
+            // 操作成功
+            this.$message({
+              message: "保存成功！",
+              type: "success"
+            });
+            this.dialog.show = true;
+            this.getProfiles()
+          });
+        }
+      });
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-
 </style>
 

@@ -14,7 +14,6 @@
     </el-form>
 
     <el-table
-      v-if="infoData.length > 0"
       :data="infoData"
       border
       :default-sort="{prop: 'date', order: 'descending'}"
@@ -56,7 +55,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <dialog-section :dialog="dialog" :form="form"></dialog-section>
+    <dialog-section :dialog="dialog" :form="form" :getProfiles="getProfiles"></dialog-section>
   </section>
 </template>
 <script>
@@ -69,7 +68,8 @@ export default {
       infoData: [],
       dialog: {
         show: false,
-        title: '添加'
+        title: '添加',
+        option: 'add',
       },
       form: {
         type: "",
@@ -83,15 +83,17 @@ export default {
     }
   },
   created() {
-    this.$http.get('/api/profiles/').then(
+    this.getProfiles()
+  },
+  methods: {
+    getProfiles(){
+      this.$http.get('/api/profiles/').then(
       result => {
         console.log(result.data)
-
         this.infoData = result.data.result
       }
     )
-  },
-  methods: {
+    },
     test() {
       this.$messagebox('ceshi')
     },
@@ -100,6 +102,34 @@ export default {
     },
     onAddMoney() {
       this.dialog.show = true
+    },
+    onEditMoney(row){
+      this.form = {
+        type: row.type,
+        describe: row.describe,
+        income: row.income,
+        expend: row.expend,
+        cash: row.cash,
+        remark: row.remark,
+        id: row._id
+      };
+      this.dialog = {
+        show: true,
+        title: '编辑',
+        option: 'edit',
+      }
+
+    },
+    onDeleteMoney(row,index){
+      // console.log(row,index);
+      this.$http.delete(`/api/profiles/delete/${row._id}`,{timeout: 1000 * 10}).then(result => {
+        this.$message("删除成功")
+        this.getProfiles()
+      }).catch(err => {
+        console.log(err);
+      })
+
+
     }
   },
 }
