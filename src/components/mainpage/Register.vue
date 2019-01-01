@@ -10,14 +10,14 @@
     <el-form-item label="邮箱" prop="email">
       <el-input type="email" v-model="registerForm.email" autocomplete="off"></el-input>
     </el-form-item>
-    <el-form-item label="昵称" prop="nick">
-      <el-input type="email" v-model="registerForm.nick" autocomplete="off"></el-input>
+    <el-form-item label="昵称" prop="name">
+      <el-input type="email" v-model="registerForm.name" autocomplete="off"></el-input>
     </el-form-item>
-    <el-form-item label="密码" prop="pass">
-      <el-input type="password" v-model="registerForm.pass" autocomplete="off"></el-input>
+    <el-form-item label="密码" prop="password">
+      <el-input type="password" v-model="registerForm.password" autocomplete="off"></el-input>
     </el-form-item>
-    <el-form-item label="确认密码" prop="checkPass">
-      <el-input type="password" v-model="registerForm.checkPass" autocomplete="off"></el-input>
+    <el-form-item label="确认密码" prop="checkPassword">
+      <el-input type="password" v-model="registerForm.checkPassword" autocomplete="off"></el-input>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submitForm('registerForm')">提交</el-button>
@@ -30,56 +30,71 @@
 export default {
   data() {
     var validatePass = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请输入密码'))
+      if (value === "") {
+        callback(new Error("请输入密码"));
       } else {
-        if (this.registerForm.checkPass !== '') {
-          this.$refs.registerForm.validateField('checkPass')
+        if (this.registerForm.checkPassword !== "") {
+          this.$refs.registerForm.validateField("checkPassword");
         }
-        callback()
+        callback();
       }
-    }
+    };
     var validatePass2 = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请再次输入密码'))
-      } else if (value !== this.registerForm.pass) {
-        callback(new Error('两次输入密码不一致!'))
+      if (value === "") {
+        callback(new Error("请再次输入密码"));
+      } else if (value !== this.registerForm.password) {
+        callback(new Error("两次输入密码不一致!"));
       } else {
-        callback()
+        callback();
       }
-    }
+    };
     return {
       registerForm: {
-        email: '',
-        name: '',
-        pass: '',
-        checkPass: ''
+        email: "",
+        name: "",
+        password: "",
+        checkPassword: ""
       },
       rules: {
-        email: [{ type: 'email', required: true, trigger: 'blur', message: '你是傻逼嘛，这是个邮箱！？' }],
-        pass: [
-          { validator: validatePass, required: true, trigger: 'blur' }
+        email: [
+          {
+            type: "email",
+            required: true,
+            trigger: "blur",
+            message: "请填写邮箱"
+          }
         ],
+        pass: [{ validator: validatePass, required: true, trigger: "blur" }],
         checkPass: [
-          { validator: validatePass2, required: true, trigger: 'blur' }
+          { validator: validatePass2, required: true, trigger: "blur" }
         ]
       }
-    }
+    };
   },
   methods: {
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(valid => {
         if (valid) {
-          alert('submit!')
+          // alert('submit!')
+          this.$http
+            .post("/api/users/register", this.registerForm)
+            .then(result => {
+              if (result.data) {
+                this.$message({
+                  message: "注册成功！",
+                  type: "success"
+                });
+              }
+            });
         } else {
-          console.log('error submit!!')
-          return false
+          console.log("error submit!!");
+          return false;
         }
-      })
+      });
     },
     resetForm(formName) {
-      this.$refs[formName].resetFields()
+      this.$refs[formName].resetFields();
     }
   }
-}
+};
 </script>

@@ -9,16 +9,22 @@ import axios from './httpfilter'
 // 引入element-ui
 import ElementUI from 'element-ui'
 import {
-  Message, MessageBox
+  Message,
+  MessageBox
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+
+import moment from 'moment'
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false
-Vue.http = Vue.prototype.$http = axios
+Vue.http = Vue.prototype.$http = Vue.prototype.$axios = axios
 Vue.message = Vue.prototype.$message = Message
 Vue.messagebox = Vue.prototype.$messagebox = MessageBox
 
+Vue.filter('dateFormat', function (dateStr, pattern = 'YYYY-MM-DD HH:mm:ss') {
+  return moment(dateStr).format(pattern)
+})
 
 /* eslint-disable no-new */
 new Vue({

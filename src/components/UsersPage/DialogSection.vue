@@ -9,36 +9,22 @@
           label-width="120px"
           style="margin:10px auto;width:420px;"
         >
-          <el-form-item label="收支类型:">
-            <el-select v-model="form.type" placeholder="收支类型">
-              <el-option
-                v-for="(formtype, index) in format_type_list"
-                :key="index"
-                :label="formtype"
-                :value="formtype"
-              ></el-option>
-            </el-select>
+          <el-form-item prop="id" label="id:">
+            <el-input type="id" v-model="form.id" disabled></el-input>
           </el-form-item>
 
-          <el-form-item prop="describe" label="收支描述:">
-            <el-input type="describe" v-model="form.describe"></el-input>
+          <el-form-item prop="email" label="邮箱:">
+            <el-input type="email" v-model="form.email" disabled></el-input>
           </el-form-item>
 
-          <el-form-item prop="income" label="收入:">
-            <el-input type="income" v-model="form.income"></el-input>
+          <el-form-item prop="name" label="用户名:">
+            <el-input type="name" v-model="form.name"></el-input>
           </el-form-item>
 
-          <el-form-item prop="expend" label="支出:">
-            <el-input type="expend" v-model="form.expend"></el-input>
+          <el-form-item prop="password" label="密码:">
+            <el-input type="password" v-model="form.password" placeholder="请直接输入新密码"></el-input>
           </el-form-item>
 
-          <el-form-item prop="cash" label="账户现金:">
-            <el-input type="cash" v-model="form.cash"></el-input>
-          </el-form-item>
-
-          <el-form-item label="备注:">
-            <el-input type="textarea" v-model="form.remark"></el-input>
-          </el-form-item>
 
           <el-form-item class="text_right">
             <el-button @click="dialog.show = false">取 消</el-button>
@@ -60,17 +46,9 @@ export default {
   },
   data() {
     return {
-      format_type_list: [
-        "提现",
-        "提现手续费",
-        "充值",
-        "优惠券",
-        "充值礼券",
-        "转账"
-      ],
       form_rules: {
-        describe: [
-          { required: true, message: "收支描述不能为空！", trigger: "blur" }
+        password: [
+          { required: true, message: "这是一个必须项", trigger: "blur" }
         ],
         income: [
           { required: true, message: "收入不能为空！", trigger: "blur" }
@@ -88,7 +66,7 @@ export default {
         if (valid) {
           //表单数据验证完成之后，提交数据;
           const url = this.dialog.option == "add" ? "add" : `edit/${this.form.id}`;
-          this.$http.post(`/api/profiles/${url}`, this.form).then(result => {
+          this.$http.post(`/api/users/${url}`, this.form).then(result => {
             // 操作成功
             this.$message({
               message: "保存成功！",

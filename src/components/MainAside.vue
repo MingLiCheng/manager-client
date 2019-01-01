@@ -45,9 +45,15 @@ export default {
         },
         {
           icon: "fa-asterisk",
-          name: "信息管理",
+          name: "用户管理",
           path: "info",
-          children: [{ path: "infoshow", name: "个人信息" }]
+          children: [{ path: "userslist", name: "用户列表" }]
+        },
+        {
+          icon: "fa-asterisk",
+          name: "菜单管理",
+          path: "foods",
+          children: [{ path: "foodslist", name: "菜单列表" }]
         }
       ]
     }
