@@ -10,9 +10,9 @@
         <el-form-item>
           <el-button type="primary" size="small" icon="search" @click="onScreeoutMoney()">筛选</el-button>
         </el-form-item>
-        <el-form-item class="btnRight">
+        <!-- <el-form-item class="btnRight">
           <el-button type="primary" size="small" icon="view" @click="onAddMoney()">添加</el-button>
-        </el-form-item>
+        </el-form-item>-->
       </el-form>
     </div>
     <div class="table_container">
@@ -30,9 +30,9 @@
             <span style="margin-left: 10px">{{ scope.row.date | dateFormat }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="email" label="邮箱" align="center" width="150"></el-table-column>
-        <el-table-column prop="name" label="用户名" align="center" width="180"></el-table-column>
-        <!-- <el-table-column prop="password" label="密码" align="center" width="180"></el-table-column> -->
+        <el-table-column prop="email" label="邮箱" align="center" width="180"></el-table-column>
+        <el-table-column prop="name" label="用户名" align="center" width="150"></el-table-column>
+        <el-table-column prop="identity" label="权限" align="center" width="180"></el-table-column>
         <el-table-column label="密码" align="center" width="180">
           <template slot-scope="scope">
             <span style="margin-left: 10px">******</span>
@@ -44,7 +44,7 @@
             <img class="avatar-img" :src="scope.row.avatar" alt srcset>
           </template>
         </el-table-column>
-        <el-table-column prop="operation" align="center" label="操作" fixed="right" width="180">
+        <el-table-column prop="operation" align="center" label="操作" fixed="right" width="180" v-if="getUser.identity === 'manager'">
           <template slot-scope="scope">
             <el-button type="warning" icon="edit" size="small" @click="onEditMoney(scope.row)">编辑</el-button>
             <el-button
@@ -80,6 +80,7 @@
 
 <script>
 import DialogSection from "./DialogSection";
+import { mapGetters } from "vuex";
 export default {
   components: { DialogSection },
   name: "userhomepage",
@@ -97,6 +98,7 @@ export default {
         email: "",
         name: "",
         password: "",
+        identity:"",
         id: ""
       },
       //需要给分页组件传的信息
@@ -140,6 +142,7 @@ export default {
         email: row.email,
         password: '',
         id: row._id,
+        identity: row.identity
       };
       console.log(this.dialog, this.form);
     },
@@ -204,7 +207,10 @@ export default {
       // 分页数据
       this.setPaginations();
     }
-  }
+  },
+  computed: {
+    ...mapGetters(['getUser'])
+  },
 };
 </script>
 <style scoped>

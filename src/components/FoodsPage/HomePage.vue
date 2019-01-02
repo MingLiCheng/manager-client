@@ -11,7 +11,7 @@
           <el-button type="primary" size="small" icon="search" @click="onScreeoutMoney()">筛选</el-button>
         </el-form-item>
         <el-form-item class="btnRight">
-          <el-button type="primary" size="small" icon="view" @click="onAddMoney()">添加</el-button>
+          <el-button type="primary" size="small" icon="view" @click="onAddFood()">添加</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -27,7 +27,7 @@
         <el-table-column prop="imgpath" label="缩略图" align="center" width="120">
           <template slot-scope="scope">
             <!-- <span style="color:#4db3ff">{{ scope.row.imgpath }}</span> -->
-            <img class="food-img" :src="'http://localhost:5000'+scope.row.imgpath" alt="">
+            <img class="food-img" :src="'http://localhost:5000'+scope.row.imgpath" alt>
           </template>
         </el-table-column>
         <el-table-column prop="c_date" label="创建时间" align="center" width="250" sortable>
@@ -40,15 +40,19 @@
         <el-table-column prop="describe" label="描述" align="center" width="180"></el-table-column>
         <el-table-column prop="name" label="名字" align="center" width="120">
           <template slot-scope="scope">
-            <span style="color:#00d053">+ {{ scope.row.name }}</span>
+            <span style="color:#00d053"> {{ scope.row.name }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="price" label="价格" align="center" width="120" sortable>
           <template slot-scope="scope">
-            <span style="color:#f56767">- {{ scope.row.price }}</span>
+            <span style="color:#f56767"> {{ scope.row.price }}</span>
           </template>
         </el-table-column>
-        
+        <el-table-column prop="imgpath" label="缩略图" align="center" width="220">
+          <template slot-scope="scope">
+            <span style="color:#4db3ff">{{ scope.row.imgpath }}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="operation" align="center" label="操作" fixed="right" width="180">
           <template slot-scope="scope">
             <el-button type="warning" icon="edit" size="small" @click="onEditMoney(scope.row)">编辑</el-button>
@@ -78,13 +82,17 @@
           </div>
         </el-col>
       </el-row>
+
     </div>
+    <dialog-section :dialog="dialog" :form="form" :getProfiles="getProfile"></dialog-section>
   </div>
 </template>
 
 <script>
+import DialogSection from './DialogSection'
 export default {
   name: "infotab",
+  components: { DialogSection },
   data() {
     return {
       tableData: [],
@@ -132,6 +140,23 @@ export default {
         // 设置分页数据
         this.setPaginations();
       });
+    },
+    onAddFood() {
+      // 添加
+      this.dialog = {
+        show: true,
+        title: "添加菜品信息",
+        option: "add"
+      };
+      this.form = {
+        type: "",
+        name: "",
+        describe: "",
+        price: "",
+        imgpath: "",
+        c_date: "",
+        id: ""
+      };
     },
     onDeleteMoney(row, index) {
       // 删除
@@ -211,7 +236,7 @@ export default {
   text-align: right;
   margin-top: 10px;
 }
-.food-img{
+.food-img {
   width: 50px;
   height: 50px;
   margin: 0 auto;

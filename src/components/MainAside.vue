@@ -45,16 +45,16 @@ export default {
         },
         {
           icon: "fa-asterisk",
+          name: "菜单管理",
+          path: "foods",
+          children: [{ path: "foodslist", name: "菜单列表" }]
+        },
+        {
+          icon: "fa-asterisk",
           name: "用户管理",
           path: "info",
           children: [{ path: "userslist", name: "用户列表" }]
         },
-        {
-          icon: "fa-asterisk",
-          name: "菜单管理",
-          path: "foods",
-          children: [{ path: "foodslist", name: "菜单列表" }]
-        }
       ]
     }
   },

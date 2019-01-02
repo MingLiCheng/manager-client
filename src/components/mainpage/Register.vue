@@ -82,9 +82,11 @@ export default {
               if (result.data) {
                 this.$message({
                   message: "注册成功！",
-                  type: "success"
+                  type: "success",
+                  duration: 1000
                 });
               }
+              this.$store.dispatch('setLoginActiveName', 'login')
             });
         } else {
           console.log("error submit!!");

@@ -1,7 +1,7 @@
 <template>
   <section>
     <h1>这是登陆界面</h1>
-    <el-tabs type="border-card" v-model="activeName">
+    <el-tabs type="border-card" :value="getLoginActiveName">
       <el-tab-pane label="登陆" name="login">
         <login></login>
       </el-tab-pane>
@@ -15,13 +15,17 @@
 <script>
 import Login from './mainpage/Login'
 import Register from './mainpage/Register'
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      activeName: 'login'
+
     }
   },
-  components: {Login, Register}
+  components: {Login, Register},
+  computed: {
+    ...mapGetters(['getLoginActiveName'])
+  }
 
 }
 
@@ -31,6 +35,7 @@ export default {
 section {
   h1{
     text-align: center;
+    padding: 40px 20px 20px 20px;
   }
   /* text-align: center; */
   width: 400px;

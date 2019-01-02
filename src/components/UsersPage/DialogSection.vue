@@ -25,6 +25,15 @@
             <el-input type="password" v-model="form.password" placeholder="请直接输入新密码"></el-input>
           </el-form-item>
 
+          <!-- <el-form-item prop="identity" label="权限">
+            <el-input type="identity" v-model="form.identity" placeholder="请直接输入新密码"></el-input>
+          </el-form-item> -->
+          <el-form-item label="权限:">
+            <el-select v-model="form.identity" placeholder="权限类型">
+              <el-option label="管理员" value="manager"></el-option>
+              <el-option label="普通员工" value="ordinary"></el-option>
+            </el-select>
+          </el-form-item>
 
           <el-form-item class="text_right">
             <el-button @click="dialog.show = false">取 消</el-button>
