@@ -3,16 +3,18 @@
     <el-row class="header-box">
       <el-col :span="12">
         <div class="app-name">
-          <h1>系统名</h1>
+          <h1>XXX管理系统</h1>
         </div>
       </el-col>
       <el-col :span="12">
         <div class="user-container">
           <el-dropdown trigger="click" @command="handleCommand">
-            <span>
-              {{ getUser.name }}
-              <i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
+            <div class="welcome">
+              <img :src="getUser.avatar" class="avatar" alt>
+              <span class="name comename">欢迎</span>
+              <span class="name avatarname">{{ getUser.name }}</span>
+              <span><i class="el-icon-arrow-down el-icon--right"></i></span>
+            </div>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="personInfo">个人信息</el-dropdown-item>
               <el-dropdown-item command="logOut">退出</el-dropdown-item>
@@ -77,8 +79,21 @@ section {
     display: flex;
     justify-content: space-between;
     .user-container {
+      padding: 20px 0px 20px 80%;
       color: black;
-      text-align: right;
+      display: flex;
+      .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 30px;
+      }
+      .welcome {
+        display: flex;
+        width: 200px;
+        height: 40px;
+        line-height: 40px;
+      }
       .el-dropdown {
         color: black;
         span {

@@ -36,7 +36,6 @@
               :on-preview="handlePreview"
               :on-remove="handleRemove"
               :before-upload="beforeUpload"
-              :file-list="fileList2"
               list-type="picture"
               :auto-upload="false"
             >
@@ -67,18 +66,17 @@ export default {
   },
   data() {
     return {
-      fileList2: [{ name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' }],
       form_rules: {
-        password: [
+        name: [
           { required: true, message: "这是一个必须项", trigger: "blur" }
         ],
-        income: [
-          { required: true, message: "收入不能为空！", trigger: "blur" }
+        price: [
+          { required: true, message: "这是一个必须项", trigger: "blur" }
         ],
         expend: [
-          { required: true, message: "支出不能为空！", trigger: "blur" }
+          { required: true, message: "这是一个必须项", trigger: "blur" }
         ],
-        cash: [{ required: true, message: "账户不能为空！", trigger: "blur" }]
+        cash: [{ required: true, message: "这是一个必须项", trigger: "blur" }]
       }
     }
   },
@@ -105,13 +103,22 @@ export default {
           //表单数据验证完成之后，提交数据;
           const url = this.dialog.option == "add" ? "add" : `edit/${this.form.id}`;
           this.$http.post(`/api/foods/${url}`, this.form).then(result => {
-            // 操作成功
-            this.$message({
+            console.log(result)
+            if(result.status === 200){
+              this.$message({
               message: "保存成功！",
               type: "success"
             })
             this.dialog.show = false
             this.getProfiles()
+            }else{
+              this.$message({
+              message: "失败",
+              type: "error"
+            })
+            }
+            // 操作成功
+
           })
         }
       })

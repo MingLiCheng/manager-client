@@ -13,6 +13,9 @@ function startLoading() { //使用Element loading-start 方法
     text: '加载中...',
     background: 'rgba(0, 0, 0, 0.7)'
   })
+  setTimeout(() => {
+    loading.close()
+  }, 10000);
 }
 
 function endLoading() { //使用Element loading-close 方法
